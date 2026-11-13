@@ -16,6 +16,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/en-gb/*" element={<App />} />
         <Route path="/en-ca" element={<App />} />
         <Route path="/en-ca/*" element={<App />} />
+        <Route path="/en-us" element={<App />} />
+        <Route path="/en-us/*" element={<App />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

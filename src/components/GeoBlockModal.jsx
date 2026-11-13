@@ -61,7 +61,7 @@ export default function GeoBlockModal({ isVisible, onClose, region = 'the USA' }
           padding: 12, marginBottom: 24,
         }}>
           <p style={{ color: '#9a3412', fontSize: '0.9rem', fontWeight: 500, margin: 0 }}>
-            Coming soon to India!
+            Coming soon to your country!
           </p>
         </div>
 

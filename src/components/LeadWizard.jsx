@@ -6,6 +6,7 @@ import { validatePhone, validateName, validateEmail, isCompleteUkPhone } from '.
 import { getVisitorId, getTrackingData, trackButtonClick } from '../lib/tracking'
 
 const TOTAL = 3
+const BACKEND_LOCALE = 'us'
 
 const STATUS_OPTIONS = [
   { value: 'F1/OPT (Student, USA)', ic: '🎓', label: 'F1 / OPT', sub: 'Student, USA' },

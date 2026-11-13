@@ -20,12 +20,12 @@ function getLogoUrl(domain) {
 
 function getUsLineStyle(name, index) {
   if (name === 'Berkeley' && index === 1) {
-    return { fontSize: '6px', fontWeight: 700, lineHeight: 1, letterSpacing: '0.02em' }
+    return { fontSize: '8px', fontWeight: 700, lineHeight: 1, letterSpacing: '0.02em' }
   }
   if (name === 'University of Michigan' && index === 0) {
-    return { fontSize: '7px', fontWeight: 700, lineHeight: 1, letterSpacing: '0.03em' }
+    return { fontSize: '9px', fontWeight: 700, lineHeight: 1, letterSpacing: '0.03em' }
   }
-  return { fontSize: '14px', fontWeight: 700, lineHeight: 0.9, letterSpacing: '-0.02em' }
+  return { fontSize: '17px', fontWeight: 700, lineHeight: 0.9, letterSpacing: '-0.02em' }
 }
 
 function getUkLineStyle(name, index, line) {
@@ -39,9 +39,9 @@ const LAYOUTS = {
   us: {
     universities: US_UNIVERSITIES,
     lineStyle: getUsLineStyle,
-    logo: 28,
-    gap: '8px',
-    grid: { display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', alignItems: 'center', gap: '24px 40px', margin: '0 auto' },
+    logo: 36,
+    gap: '10px',
+    grid: { display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', alignItems: 'center', gap: '24px 28px', margin: '0 auto' },
   },
   uk: {
     universities: UK_UNIVERSITIES,

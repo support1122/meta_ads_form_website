@@ -6,10 +6,10 @@ export function getLocaleFromPath(pathname) {
 }
 
 const HERO_US = {
-  badge: 'Land Interview In 1 Week',
-  line1: 'Land Interview',
-  line2: 'Calls Faster with',
-  highlight: 'FlashFire AI Copilot',
+  badge: 'Interviews in as little as 1 week',
+  line1: 'Land a Sponsored US Job',
+  line2: 'in 90 Days with',
+  highlight: 'FlashFire!',
 }
 
 const FOOTER_US = {
@@ -19,9 +19,9 @@ const FOOTER_US = {
 
 export const LOCALE_CONTENT = {
   us: {
-    title: 'FlashFire Jobs — Land Interview Calls Faster With Your AI Copilot',
-    description: "FlashFire's AI Copilot tailors and submits up to 1,200 US & Canada job applications for you. Get your free career strategy call.",
-    sub: 'We apply to 1200 USA job applications & track everything while you focus on winning the interview.',
+    title: 'FlashFire Jobs — Land a Sponsored US Job in 90 Days',
+    description: "FlashFire's team tailors and submits up to 1,200 targeted US job applications on your behalf. Get your free career strategy call.",
+    sub: 'Share your details and discover how our team can help you land more interviews by applying to 1,200 targeted US jobs on your behalf.',
     hero: HERO_US,
     footer: FOOTER_US,
     market: 'U.S.',

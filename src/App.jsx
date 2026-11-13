@@ -11,7 +11,6 @@ import Footer from './components/Footer'
 import CalendlyModal from './components/CalendlyModal'
 import GeoBlockModal from './components/GeoBlockModal'
 import { getLocaleFromPath, LOCALE_CONTENT } from './lib/locale'
-import { detectCountry } from './lib/countryDetection'
 import { captureTrackingParams, trackPageView } from './lib/tracking'
 import { detectIndiaBlock, isIndiaClientHeuristic, isGeoBypassed, grantGeoBypass } from './lib/geoBlock'
 import { useGeoBypass } from './lib/useGeoBypass'
@@ -19,7 +18,7 @@ import { useGeoBypass } from './lib/useGeoBypass'
 export default function App() {
   const [showCalendly, setShowCalendly] = useState(false)
   const [calendlyLead, setCalendlyLead] = useState(null)
-  const [locale, setLocale] = useState(() => getLocaleFromPath(window.location.pathname))
+  const [locale] = useState(() => getLocaleFromPath(window.location.pathname))
   const [isIndiaBlocked, setIsIndiaBlocked] = useState(false)
   const [geoBypassed, setGeoBypassed] = useState(() => isGeoBypassed())
   const [showGeoBlock, setShowGeoBlock] = useState(false)
@@ -86,25 +85,6 @@ export default function App() {
     // attribute the page view.
     captureTrackingParams()
     trackPageView()
-
-    let redirected = false
-    try {
-      redirected = !!sessionStorage.getItem('ff_geo_redirected_v1')
-    } catch {
-      redirected = false
-    }
-    if (window.location.pathname !== '/' || redirected) return
-
-    detectCountry().then(code => {
-      if (code !== 'CA') return
-      try {
-        sessionStorage.setItem('ff_geo_redirected_v1', '1')
-      } catch {
-        // ignore storage errors
-      }
-      window.history.replaceState({}, '', '/en-ca' + window.location.search + window.location.hash)
-      setLocale('en-ca')
-    })
   }, [])
 
   useEffect(() => {
