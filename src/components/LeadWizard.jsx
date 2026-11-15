@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { API_BASE_URL } from '../lib/config'
+import { API_BASE_URL, GADS_CONVERSION_ID, GADS_CONVERSION_LABEL } from '../lib/config'
 import { getCachedCountryCode } from '../lib/countryDetection'
 import { LOCALE_CONTENT } from '../lib/locale'
 import { validatePhone, validateName, validateEmail, isCompleteUkPhone } from '../lib/validation'
@@ -165,6 +165,17 @@ export default function LeadWizard({ locale, onOpenCalendly }) {
       document.body.classList.add('done')
       if (typeof window !== 'undefined' && window.fbq) {
         window.fbq('track', 'Lead')
+      }
+      if (typeof window !== 'undefined' && window.gtag) {
+        const cleanPhone = phone.replace(/[\s()-]/g, '')
+        window.gtag('set', 'user_data', {
+          email: email.trim().toLowerCase(),
+          ...(/^\+\d{8,15}$/.test(cleanPhone) ? { phone_number: cleanPhone } : {}),
+        })
+        window.gtag('event', 'generate_lead')
+        if (GADS_CONVERSION_LABEL) {
+          window.gtag('event', 'conversion', { send_to: `${GADS_CONVERSION_ID}/${GADS_CONVERSION_LABEL}` })
+        }
       }
       if (onOpenCalendly) onOpenCalendly({ name: name.trim(), email: email.trim().toLowerCase(), phone: phone.trim() })
     } catch {
