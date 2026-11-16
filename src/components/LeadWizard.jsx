@@ -6,7 +6,6 @@ import { validatePhone, validateName, validateEmail, isCompleteUkPhone } from '.
 import { getVisitorId, getTrackingData, trackButtonClick } from '../lib/tracking'
 
 const TOTAL = 3
-const BACKEND_LOCALE = 'us'
 
 const STATUS_OPTIONS = [
   { value: 'F1/OPT (Student, USA)', ic: '🎓', label: 'F1 / OPT', sub: 'Student, USA' },
@@ -173,7 +172,8 @@ export default function LeadWizard({ locale, onOpenCalendly }) {
           ...(/^\+\d{8,15}$/.test(cleanPhone) ? { phone_number: cleanPhone } : {}),
         })
         window.gtag('event', 'generate_lead')
-        if (GADS_CONVERSION_LABEL) {
+        // The conversion action is the UK one, so only the UK page reports it.
+        if (locale === 'en-gb' && GADS_CONVERSION_LABEL) {
           window.gtag('event', 'conversion', { send_to: `${GADS_CONVERSION_ID}/${GADS_CONVERSION_LABEL}` })
         }
       }
