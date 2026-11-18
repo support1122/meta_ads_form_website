@@ -5,6 +5,14 @@ export function getLocaleFromPath(pathname) {
   return 'us'
 }
 
+// The market the CRM files a lead under: 'us', 'ca' or 'uk'. Sent with every form submission together with the
+// route (for example '/uk'), so the team can tell which page a lead came from.
+export function marketForLocale(locale) {
+  if (locale === 'en-gb') return 'uk'
+  if (locale === 'en-ca') return 'ca'
+  return 'us'
+}
+
 const HERO_US = {
   badge: 'Interviews in as little as 1 week',
   line1: 'Land a Sponsored US Job',

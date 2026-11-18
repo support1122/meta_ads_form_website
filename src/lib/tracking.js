@@ -16,6 +16,11 @@ const PARAM_MAP = {
   utm_content: 'utmContent',
   utm_term: 'utmTerm',
   fbclid: 'fbclid',
+  // Google Ads click ids, so a lead from Google can be traced to its campaign
+  gclid: 'gclid',
+  gbraid: 'gbraid',
+  wbraid: 'wbraid',
+  gad_campaignid: 'gadCampaignId',
 }
 
 function generateId() {
@@ -148,6 +153,10 @@ export function getTrackingData() {
     utmContent: stored.utmContent || null,
     utmTerm: stored.utmTerm || null,
     fbclid: stored.fbclid || null,
+    gclid: stored.gclid || null,
+    gbraid: stored.gbraid || null,
+    wbraid: stored.wbraid || null,
+    gadCampaignId: stored.gadCampaignId || null,
     fbp: getCookie('_fbp'),
     fbc: getCookie('_fbc'),
   }
