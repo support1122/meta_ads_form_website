@@ -2,16 +2,21 @@ import { useState, useEffect } from 'react'
 import { InlineWidget, useCalendlyEventListener } from 'react-calendly'
 import { X, Calendar, CheckCircle } from 'lucide-react'
 import { getTrackingData } from '../lib/tracking'
+import { getLocaleFromPath, marketForLocale } from '../lib/locale'
 
 const CALENDLY_URL = 'https://calendly.com/feedback-flashfire/15min'
 
 function buildCalendlyUrl() {
   const tracking = getTrackingData()
   const params = new URLSearchParams()
-  params.set('utm_source', tracking.utmSource || 'meta_ads_form')
+  const fromGoogle = tracking.gclid || tracking.gbraid || tracking.wbraid
+  params.set('utm_source', tracking.utmSource || (fromGoogle ? 'google' : 'meta_ads_form'))
   params.set('utm_medium', tracking.utmMedium || 'paid')
   if (tracking.utmCampaign) params.set('utm_campaign', tracking.utmCampaign)
-  if (tracking.utmContent) params.set('utm_content', tracking.utmContent)
+  // Hidden route tag. Calendly hands utm_content back on the booking, so a booking made without the lead form
+  // still says which page it came from. An ad's own utm_content is never overwritten.
+  const market = marketForLocale(getLocaleFromPath(window.location.pathname))
+  params.set('utm_content', tracking.utmContent || `route-${market}`)
   if (tracking.utmTerm) params.set('utm_term', tracking.utmTerm)
   return `${CALENDLY_URL}?${params.toString()}`
 }

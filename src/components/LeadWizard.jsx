@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { API_BASE_URL, GADS_CONVERSION_ID, GADS_CONVERSION_LABEL } from '../lib/config'
 import { getCachedCountryCode } from '../lib/countryDetection'
-import { LOCALE_CONTENT } from '../lib/locale'
+import { LOCALE_CONTENT, marketForLocale } from '../lib/locale'
 import { validatePhone, validateName, validateEmail, isCompleteUkPhone } from '../lib/validation'
 import { getVisitorId, getTrackingData, trackButtonClick } from '../lib/tracking'
 
@@ -117,10 +117,11 @@ export default function LeadWizard({ locale, onOpenCalendly }) {
           phone,
           status,
           // The lead API only accepts 'us' or 'en-ca' for locale, so UK leads are
-          // sent as 'us' and tagged with market 'uk'. The job type ("... (UK)")
-          // is saved on the CRM lead, which is what tells UK leads apart there.
+          // sent as 'us'. The market ('us', 'ca', 'uk') and the route ('/uk') say which
+          // page the lead came from; the CRM stores both and filters on them.
           locale: locale === 'en-gb' ? 'us' : locale,
-          market: locale === 'en-gb' ? 'uk' : undefined,
+          market: marketForLocale(locale),
+          landingRoute: window.location.pathname,
           clientGeo: {
             countryCode: getCachedCountryCode(),
             timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
