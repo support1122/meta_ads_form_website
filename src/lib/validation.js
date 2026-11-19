@@ -64,3 +64,13 @@ export function validateEmail(raw) {
   if (DOMAIN_TYPOS[domain]) return `Did you mean ${s.split('@')[0]}@${DOMAIN_TYPOS[domain]}?`
   return ''
 }
+
+// True for a fully typed Australian number (mobile 04xx xxx xxx or a landline
+// 0[2378] xxxx xxxx), with or without +61 / 0061.
+export function isCompleteAuPhone(raw) {
+  let t = (raw || '').replace(/\(0\)/g, '').replace(/[\s().-]/g, '')
+  if (t.startsWith('0061')) t = '+61' + t.slice(4)
+  const rest = t.startsWith('+61') ? t.slice(3) : t.startsWith('0') ? t.slice(1) : ''
+  const n = rest.replace(/^0/, '')
+  return /^4\d{8}$/.test(n) || /^[2378]\d{8}$/.test(n)
+}

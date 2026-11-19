@@ -14,6 +14,14 @@ const UK_UNIVERSITIES = [
   { name: 'University of Edinburgh', domain: 'www.ed.ac.uk', wordmark: ['UNIVERSITY OF', 'EDINBURGH'], color: '#041e42' },
 ]
 
+const AU_UNIVERSITIES = [
+  { name: 'University of Melbourne', domain: 'unimelb.edu.au', wordmark: ['THE UNIVERSITY OF', 'MELBOURNE'], color: '#094183' },
+  { name: 'University of Sydney', domain: 'sydney.edu.au', wordmark: ['THE UNIVERSITY OF', 'SYDNEY'], color: '#e64626' },
+  { name: 'Australian National University', domain: 'anu.edu.au', wordmark: ['ANU'], color: '#be830e' },
+  { name: 'UNSW Sydney', domain: 'unsw.edu.au', wordmark: ['UNSW', 'SYDNEY'], color: '#000000' },
+  { name: 'Monash University', domain: 'monash.edu', wordmark: ['MONASH', 'University'], color: '#006dae' },
+]
+
 function getLogoUrl(domain) {
   return `https://www.google.com/s2/favicons?domain=${domain}&sz=128`
 }
@@ -29,13 +37,20 @@ function getUsLineStyle(name, index) {
 }
 
 function getUkLineStyle(name, index, line) {
-  if (line === 'UNIVERSITY OF') {
+  if (line === 'UNIVERSITY OF' || line === 'THE UNIVERSITY OF') {
     return { fontSize: '11px', fontWeight: 700, lineHeight: 1, letterSpacing: '0.03em' }
   }
   return { fontSize: '22px', fontWeight: 700, lineHeight: 0.9, letterSpacing: '-0.02em' }
 }
 
 const LAYOUTS = {
+  au: {
+    universities: AU_UNIVERSITIES,
+    lineStyle: getUkLineStyle,
+    logo: 44,
+    gap: '10px',
+    grid: { display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '32px 56px', margin: '0 auto' },
+  },
   us: {
     universities: US_UNIVERSITIES,
     lineStyle: getUsLineStyle,
@@ -53,7 +68,7 @@ const LAYOUTS = {
 }
 
 export default function Trust({ locale = 'us', heading }) {
-  const layout = locale === 'en-gb' ? LAYOUTS.uk : LAYOUTS.us
+  const layout = locale === 'en-au' ? LAYOUTS.au : locale === 'en-gb' ? LAYOUTS.uk : LAYOUTS.us
   return (
     <section style={{ padding: '36px 24px', textAlign: 'center', background: '#fff' }}>
       <p style={{

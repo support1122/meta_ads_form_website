@@ -1,13 +1,15 @@
-// Locales: 'us' (default), 'en-ca' (/en-ca) and 'en-gb' (/uk and /en-gb).
+// Locales: 'us' (default), 'en-ca' (/en-ca), 'en-gb' (/uk and /en-gb) and 'en-au' (/au and /en-au).
 export function getLocaleFromPath(pathname) {
   if (pathname === '/en-ca' || pathname.startsWith('/en-ca/')) return 'en-ca'
+  if (['/au', '/en-au'].some(p => pathname === p || pathname.startsWith(p + '/'))) return 'en-au'
   if (['/uk', '/en-gb'].some(p => pathname === p || pathname.startsWith(p + '/'))) return 'en-gb'
   return 'us'
 }
 
-// The market the CRM files a lead under: 'us', 'ca' or 'uk'. Sent with every form submission together with the
+// The market the CRM files a lead under: 'us', 'ca', 'uk' or 'au'. Sent with every form submission together with the
 // route (for example '/uk'), so the team can tell which page a lead came from.
 export function marketForLocale(locale) {
+  if (locale === 'en-au') return 'au'
   if (locale === 'en-gb') return 'uk'
   if (locale === 'en-ca') return 'ca'
   return 'us'
@@ -26,6 +28,33 @@ const FOOTER_US = {
 }
 
 export const LOCALE_CONTENT = {
+  'en-au': {
+    title: 'FlashFire Jobs — Land a Sponsored Australian Job in 90 Days',
+    description: "FlashFire's team tailors and submits up to 1,200 targeted Australian job applications on your behalf. Book your free career strategy call.",
+    sub: 'Share your details and discover how our team can help you land more interviews by applying to 1,200 targeted Australian jobs on your behalf.',
+    hero: {
+      badge: 'Interviews in as little as 1 week',
+      line1: 'Land a Sponsored Australian Job',
+      line2: 'in 90 Days with',
+      highlight: 'FlashFire!',
+    },
+    footer: {
+      heading: 'Start Your Australian Job Search with FlashFire',
+      sub: 'Get expert guidance from our team and let us apply to hundreds of targeted roles across Sydney, Melbourne, Brisbane, Perth and beyond while you focus on winning the interview.',
+    },
+    market: 'Australia',
+    marketPhrase: 'across Australia',
+    geoBlockRegion: 'Australia',
+    universitiesHeading: 'Trusted by students and graduates from top Australian universities.',
+    phonePlaceholder: '+61 412 345 678',
+    phoneHint: 'Numbers only. Include your country code if outside Australia. We\u2019ll move on automatically.',
+    statusOrder: [
+      'Student Visa (Australia)',
+      'Graduate Visa (Australia)',
+      'Employer Sponsored Visa (Australia)',
+      'Just exploring',
+    ],
+  },
   us: {
     title: 'FlashFire Jobs — Land a Sponsored US Job in 90 Days',
     description: "FlashFire's team tailors and submits up to 1,200 targeted US job applications on your behalf. Get your free career strategy call.",
