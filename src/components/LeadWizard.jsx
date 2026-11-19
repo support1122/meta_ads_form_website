@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { API_BASE_URL, GADS_CONVERSION_ID, GADS_CONVERSION_LABEL } from '../lib/config'
 import { getCachedCountryCode } from '../lib/countryDetection'
 import { LOCALE_CONTENT, marketForLocale } from '../lib/locale'
-import { validatePhone, validateName, validateEmail, isCompleteUkPhone } from '../lib/validation'
+import { validatePhone, validateName, validateEmail, isCompleteUkPhone, isCompleteAuPhone } from '../lib/validation'
 import { getVisitorId, getTrackingData, trackButtonClick } from '../lib/tracking'
 
 const TOTAL = 3
@@ -14,6 +14,9 @@ const STATUS_OPTIONS = [
   { value: 'Student Visa (UK)', ic: '🎓', label: 'Student Visa', sub: 'UK' },
   { value: 'Graduate Visa (UK)', ic: '📜', label: 'Graduate Visa', sub: 'UK' },
   { value: 'Skilled Worker Visa (UK)', ic: '💼', label: 'Skilled Worker Visa', sub: 'UK' },
+  { value: 'Student Visa (Australia)', ic: '🎓', label: 'Student Visa', sub: 'Australia' },
+  { value: 'Graduate Visa (Australia)', ic: '📜', label: 'Graduate Visa', sub: 'Australia (485)' },
+  { value: 'Employer Sponsored Visa (Australia)', ic: '💼', label: 'Employer Sponsored', sub: 'Australia (482 / SID)' },
   { value: 'Just exploring', ic: '🔍', label: 'Just', sub: 'Exploring' },
 ]
 
@@ -57,7 +60,7 @@ export default function LeadWizard({ locale, onOpenCalendly }) {
     setPhone(cleaned)
     setPhoneErr(
       cleaned !== raw
-        ? 'Please type numbers only (e.g. 07700 900123 or +91 98173 49846). Letters are not allowed.'
+        ? `Please type numbers only (e.g. ${locale === 'en-au' ? '0412 345 678 or +61 412 345 678' : '07700 900123 or +91 98173 49846'}). Letters are not allowed.`
         : ''
     )
   }
@@ -78,10 +81,10 @@ export default function LeadWizard({ locale, onOpenCalendly }) {
     if (step !== 2 || phoneErr || validatePhone(phone)) return
     const t = setTimeout(
       () => setStep(3),
-      isCompleteUkPhone(phone) ? PHONE_ADVANCE_UK_MS : PHONE_ADVANCE_INTL_MS
+      (locale === 'en-au' ? isCompleteAuPhone(phone) : isCompleteUkPhone(phone)) ? PHONE_ADVANCE_UK_MS : PHONE_ADVANCE_INTL_MS
     )
     return () => clearTimeout(t)
-  }, [step, phone, phoneErr])
+  }, [step, phone, phoneErr, locale])
 
   // Enter key (the form has no buttons to click).
   function handleFormSubmit(e) {
@@ -116,10 +119,10 @@ export default function LeadWizard({ locale, onOpenCalendly }) {
           email,
           phone,
           status,
-          // The lead API only accepts 'us' or 'en-ca' for locale, so UK leads are
-          // sent as 'us'. The market ('us', 'ca', 'uk') and the route ('/uk') say which
+          // The lead API only accepts 'us' or 'en-ca' for locale, so UK and AU leads
+          // are sent as 'us'. The market ('us', 'ca', 'uk', 'au') and the route ('/uk', '/au') say which
           // page the lead came from; the CRM stores both and filters on them.
-          locale: locale === 'en-gb' ? 'us' : locale,
+          locale: locale === 'en-gb' || locale === 'en-au' ? 'us' : locale,
           market: marketForLocale(locale),
           landingRoute: window.location.pathname,
           clientGeo: {
